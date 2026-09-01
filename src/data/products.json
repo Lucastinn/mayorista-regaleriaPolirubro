@@ -1,0 +1,98 @@
+[
+{
+    "id": 1,
+    "name": "Auriculares Bluetooth TWS X20",
+    "category": "electronica",
+    "price": 15000,
+    "stock": 40,
+    "image": "/placeholder.jpg"
+},
+{
+    "id": 2,
+    "name": "Cargador Rápido USB-C 20W",
+    "category": "electronica",
+    "price": 8500,
+    "stock": 120,
+    "image": "/placeholder.jpg"
+},
+{
+    "id": 3,
+    "name": "Power Bank 10000mAh",
+    "category": "electronica",
+    "price": 22000,
+    "stock": 60,
+    "image": "/placeholder.jpg"
+},
+{
+    "id": 4,
+    "name": "Aros de Acero Quirúrgico Gota",
+    "category": "bijouteria",
+    "price": 3200,
+    "stock": 200,
+    "image": "/placeholder.jpg"
+},
+{
+    "id": 5,
+    "name": "Collar Chapa Oro Iniciales",
+    "category": "bijouteria",
+    "price": 5400,
+    "stock": 150,
+    "image": "/placeholder.jpg"
+},
+{
+    "id": 6,
+    "name": "Pulsera Cristales Ajustable",
+    "category": "bijouteria",
+    "price": 2800,
+    "stock": 180,
+    "image": "/placeholder.jpg"
+},
+{
+    "id": 7,
+    "name": "Auto a Fricción Metálico",
+    "category": "juguetes",
+    "price": 6500,
+    "stock": 90,
+    "image": "/placeholder.jpg"
+},
+{
+    "id": 8,
+    "name": "Set Bloques Encastre x100",
+    "category": "juguetes",
+    "price": 12000,
+    "stock": 70,
+    "image": "/placeholder.jpg"
+},
+{
+    "id": 9,
+    "name": "Muñeca Articulada 30cm",
+    "category": "juguetes",
+    "price": 9800,
+    "stock": 0,
+    "image": "/placeholder.jpg"
+},
+{
+    "id": 10,
+    "name": "Taza Cerámica Frase Divertida",
+    "category": "regalos",
+    "price": 4200,
+    "stock": 130,
+    "image": "/placeholder.jpg"
+},
+{
+    "id": 11,
+    "name": "Vela Aromática Lavanda 200g",
+    "category": "regalos",
+    "price": 3800,
+    "stock": 100,
+    "image": "/placeholder.jpg"
+},
+{
+    "id": 12,
+    "name": "Kit Mate Acero Inoxidable",
+    "category": "regalos",
+    "price": 18500,
+    "stock": 45,
+    "image": "/placeholder.jpg"
+}
+]
