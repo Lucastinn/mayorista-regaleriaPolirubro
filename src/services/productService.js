@@ -1,12 +1,19 @@
-import products from "@/data/products.json";
+import { supabase } from "@/lib/supabaseClient";
 
 /**
- * Devuelve la lista de productos.
- * Hoy lee del JSON local. El día que tengas backend/DB real,
- * esta es la ÚNICA función que necesitás mutar (fetch a tu API,
- * query a la DB, etc.) sin tocar nada de la UI.
+ * Trae los productos desde la tabla 'products' de Supabase.
+ * Reemplaza la lectura del JSON local.
  */
 export async function getProducts() {
-  // TODO: reemplazar por fetch("/api/products") o consulta a la DB
-return products;
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Error al obtener productos de Supabase:", error.message);
+    return [];
+  }
+
+  return data;
 }
