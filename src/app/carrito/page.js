@@ -3,9 +3,6 @@
 import Link from "next/link";
 import { useCartStore } from "@/store/cartStore";
 
-// TODO: reemplazar por el número real de WhatsApp del negocio (formato: código país + área + número, sin +)
-const WHATSAPP_NUMBER = "5493446369242";
-
 function formatARS(value) {
 return new Intl.NumberFormat("es-AR", {
     style: "currency",
@@ -23,25 +20,6 @@ const removeItem = useCartStore((state) => state.removeItem);
 const clearCart = useCartStore((state) => state.clearCart);
 
 const isEmpty = items.length === 0;
-
-function handleCheckoutWhatsApp() {
-    let message = "Hola, quiero hacer el siguiente pedido:\n";
-
-    items.forEach((item) => {
-      const subtotal = item.price * item.quantity;
-    message += `- ${item.quantity}x ${item.name} (${formatARS(
-        item.price
-    )} c/u) = ${formatARS(subtotal)}\n`;
-    });
-
-    message += `\nTotal: ${formatARS(total)}`;
-
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-    message
-    )}`;
-
-    window.open(url, "_blank");
-}
 
 if (isEmpty) {
     return (
@@ -84,7 +62,7 @@ return (
             Tu carrito
         </h1>
         <p className="mt-1 text-sm text-gray-500">
-            Revisá tu pedido antes de enviarlo.
+            Revisá tu pedido antes de continuar.
         </p>
         </div>
         <button
@@ -96,9 +74,7 @@ return (
     </div>
 
     <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_320px]">
-        {/* Lista de items */}
         <div className="rounded-xl border border-gray-200 bg-white p-4 sm:p-6">
-          {/* Header solo visible en desktop */}
         <div className="hidden border-b border-gray-100 pb-3 text-xs font-semibold uppercase tracking-wide text-gray-400 md:grid md:grid-cols-[64px_1fr_110px_130px_110px_32px] md:gap-4">
             <span></span>
             <span>Producto</span>
@@ -110,15 +86,14 @@ return (
 
         <div className="divide-y divide-gray-100">
             {items.map((item) => {
-            const subtotal = item.price * item.quantity;
-            const reachedStockLimit = item.quantity >= item.stock;
+                const subtotal = item.price * item.quantity;
+                const reachedStockLimit = item.quantity >= item.stock;
 
             return (
                 <div
                 key={item.id}
                 className="flex flex-col gap-4 py-4 md:grid md:grid-cols-[64px_1fr_110px_130px_110px_32px] md:items-center md:gap-4"
                 >
-                  {/* Imagen */}
                 <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-gray-100">
                     <img
                     src={item.image}
@@ -127,7 +102,6 @@ return (
                     />
                 </div>
 
-                  {/* Nombre + categoría */}
                 <div className="min-w-0">
                     <p className="truncate text-sm font-semibold text-gray-900">
                     {item.name}
@@ -137,7 +111,6 @@ return (
                     </p>
                 </div>
 
-                  {/* Precio unitario */}
                 <div className="text-sm text-gray-600">
                     <span className="font-medium text-gray-400 md:hidden">
                     Precio unit.:{" "}
@@ -145,7 +118,6 @@ return (
                     {formatARS(item.price)}
                 </div>
 
-                  {/* Controles de cantidad */}
                 <div className="flex items-center gap-2">
                     <button
                     onClick={() => decreaseItem(item.id)}
@@ -172,7 +144,6 @@ return (
                     </button>
                 </div>
 
-                  {/* Subtotal */}
                 <div className="text-sm font-semibold text-gray-900">
                     <span className="font-medium text-gray-400 md:hidden">
                     Subtotal:{" "}
@@ -180,7 +151,6 @@ return (
                     {formatARS(subtotal)}
                 </div>
 
-                  {/* Eliminar */}
                 <button
                     onClick={() => removeItem(item.id)}
                     className="flex h-7 w-7 items-center justify-center self-start rounded-full text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500 md:self-center"
@@ -207,7 +177,6 @@ return (
         </div>
         </div>
 
-        {/* Panel lateral de total */}
         <aside className="h-fit rounded-xl border border-gray-200 bg-white p-6 lg:sticky lg:top-24">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400">
             Resumen del pedido
@@ -220,20 +189,12 @@ return (
             </span>
         </div>
 
-        <button
-            onClick={handleCheckoutWhatsApp}
-            className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-green-600 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-green-700"
+        <Link
+            href="/checkout"
+            className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-gray-900 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-gray-700"
         >
-            <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            >
-            <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.29-1.39a9.9 9.9 0 004.75 1.21h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2zm0 18.11a8.2 8.2 0 01-4.17-1.14l-.3-.18-3.11.82.83-3.03-.2-.31a8.18 8.18 0 01-1.26-4.36c0-4.52 3.68-8.2 8.21-8.2 4.52 0 8.2 3.68 8.2 8.2 0 4.53-3.68 8.2-8.2 8.2z" />
-            </svg>
-            Finalizar pedido por WhatsApp
-        </button>
+            Continuar con mis datos →
+        </Link>
 
         <Link
             href="/"

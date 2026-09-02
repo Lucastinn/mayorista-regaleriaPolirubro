@@ -6,7 +6,6 @@ persist(
     (set, get) => ({
     items: [],
 
-    // Agrega un producto. Si ya existe, suma cantidad.
     addItem: (product) =>
         set((state) => {
         const existing = state.items.find((item) => item.id === product.id);
@@ -26,7 +25,6 @@ persist(
         };
         }),
 
-      // Resta 1 al producto. Si llega a 0, lo elimina del carrito.
     decreaseItem: (id) =>
         set((state) => {
         const existing = state.items.find((item) => item.id === id);
@@ -45,7 +43,6 @@ persist(
         };
         }),
 
-      // Elimina el producto por completo, sin importar la cantidad.
     removeItem: (id) =>
         set((state) => ({
         items: state.items.filter((item) => item.id !== id),
@@ -53,7 +50,6 @@ persist(
 
     clearCart: () => set({ items: [] }),
 
-      // Total a pagar
     getTotal: () => {
         const { items } = get();
         return items.reduce(
@@ -62,14 +58,25 @@ persist(
         );
     },
 
-      // Cantidad total de unidades (útil para el badge del Navbar)
     getTotalItems: () => {
         const { items } = get();
         return items.reduce((acc, item) => acc + item.quantity, 0);
     },
+
+      // Arma el array en el formato exacto que espera la función SQL
+      // create_order_with_items (parámetro p_items, tipo jsonb).
+    getOrderItems: () => {
+        const { items } = get();
+        return items.map((item) => ({
+        product_id: item.id,
+        product_name: item.name,
+        unit_price: item.price,
+        quantity: item.quantity,
+        }));
+    },
     }),
     {
-      name: "cart-storage", // key en localStorage
+    name: "cart-storage",
     }
 )
 );
