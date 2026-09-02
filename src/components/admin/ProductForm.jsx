@@ -1,13 +1,37 @@
+"use client";
+
+import { useActionState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import SubmitButton from "./SubmitButton";
+import { useToast } from "./ToastProvider";
+
 const CATEGORIES = [
-  { value: "electronica", label: "Electrónica" },
-  { value: "bijouteria", label: "Bijouterie" },
-  { value: "juguetes", label: "Juguetes" },
-  { value: "regalos", label: "Regalos" },
+{ value: "electronica", label: "Electrónica" },
+{ value: "bijouteria", label: "Bijouterie" },
+{ value: "juguetes", label: "Juguetes" },
+{ value: "regalos", label: "Regalos" },
 ];
 
+const initialState = { success: false, message: "" };
+
 export default function ProductForm({ action, product }) {
+const [state, formAction] = useActionState(action, initialState);
+const router = useRouter();
+const { showToast } = useToast();
+
+useEffect(() => {
+    if (state.success) {
+    showToast(state.message, "success");
+    router.refresh();
+    router.push("/admin");
+    } else if (state.message) {
+    showToast(state.message, "error");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [state]);
+
 return (
-    <form action={action} className="flex flex-col gap-4">
+    <form action={formAction} className="flex flex-col gap-4">
     <div>
         <label className="mb-1 block text-xs font-medium text-gray-600">
         Nombre
@@ -17,7 +41,7 @@ return (
         name="name"
         defaultValue={product?.name}
         required
-        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-gray-900"
+        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 outline-none focus:border-gray-900"
         />
     </div>
 
@@ -29,7 +53,7 @@ return (
         name="category"
         defaultValue={product?.category || CATEGORIES[0].value}
         required
-        className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:border-gray-900"
+        className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none focus:border-gray-900"
         >
         {CATEGORIES.map((cat) => (
             <option key={cat.value} value={cat.value}>
@@ -51,7 +75,7 @@ return (
             step="1"
             defaultValue={product?.price}
             required
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-gray-900"
+            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 outline-none focus:border-gray-900"
         />
         </div>
 
@@ -66,7 +90,7 @@ return (
             step="1"
             defaultValue={product?.stock}
             required
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-gray-900"
+            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 outline-none focus:border-gray-900"
         />
         </div>
     </div>
@@ -79,16 +103,14 @@ return (
         type="text"
         name="image"
         defaultValue={product?.image || "/placeholder.jpg"}
-        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-gray-900"
+        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 outline-none focus:border-gray-900"
         />
     </div>
 
-    <button
-        type="submit"
-        className="mt-2 w-full rounded-lg bg-gray-900 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-gray-700"
-    >
-        {product ? "Guardar cambios" : "Crear producto"}
-    </button>
+    <SubmitButton
+        idleLabel={product ? "Guardar cambios" : "Crear producto"}
+        pendingLabel={product ? "Guardando..." : "Creando..."}
+    />
     </form>
 );
 }
